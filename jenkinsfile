@@ -1,0 +1,63 @@
+pipeline {
+    agent any
+
+    parameters {
+        choice(name: 'Language', choices: ['All', 'C', 'Python', 'Bash'])
+    }
+
+    environment {
+        LOG_DIR = "${env.workspace}/logs"
+    }
+
+    stages {
+        stage('Initialize') {
+            steps {
+                script {
+                    if (!fileExists(env.LOG_DIR)) {
+                        sh "mkdir -p ${env.LOG_DIR}"
+                    }
+                }
+            }
+        }
+
+        stage('Build C') {
+            when {
+                expression { return params.Language == 'All' || params.Language == 'C' }
+            }
+            steps {
+                script {
+                    sh 'gcc -o hello hello.c'
+                    sh './my_c > ${LOG_DIR}/c_output.log'
+                }
+            }
+        }
+
+        stage('Run Python') {
+            when {
+                expression { return params.Language == 'All' || params.Language == 'Python' }
+            }
+            steps {
+                script {
+                    sh 'python3 hello.py > ${LOG_DIR}/python_output.log'
+                }
+            }
+        }
+
+        stage('Run Bash') {
+            when {
+                expression { return params.Language == 'All' || params.Language == 'Bash' }
+            }
+            steps {
+                script {
+                    sh './hello.sh > ${LOG_DIR}/bash_output.log'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'logs/*.log', allowEmptyArchive: true
+        }
+    }
+}
