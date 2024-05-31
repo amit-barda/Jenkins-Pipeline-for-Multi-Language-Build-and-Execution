@@ -27,7 +27,7 @@ pipeline {
             steps {
                 script {
                     sh 'gcc -o hello hello.c'
-                    sh './my_c > ${LOG_DIR}/c_output.log'
+                    sh './hello > ${LOG_DIR}/c_output.log'
                 }
             }
         }
