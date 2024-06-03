@@ -7,12 +7,6 @@ pipeline {
 
     environment {
         LOG_DIR = "${WORKSPACE}/logs"
-    }
-    stage('Clean Workspace') {
-    steps {
-        deleteDir()
-    }
-}
 
     stages {
         stage('Checkout') {
