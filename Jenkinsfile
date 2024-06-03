@@ -2,20 +2,18 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'Language', choices: ['All', 'C', 'Python', 'Bash'])
+        choice(name: 'Language', choices: ['All', 'C', 'Python', 'Bash'], description: 'Choose the language for the pipeline', defaultValue: 'All')
     }
 
     environment {
-        LOG_DIR = "${env.workspace}/logs"
+        LOG_DIR = "${WORKSPACE}/logs"
     }
 
     stages {
         stage('Initialize') {
             steps {
                 script {
-                    if (!fileExists(env.LOG_DIR)) {
-                        sh "mkdir -p ${env.LOG_DIR}"
-                    }
+                    sh "mkdir -p ${LOG_DIR}"
                 }
             }
         }
@@ -26,8 +24,18 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'gcc -o hello hello.c'
-                    sh './hello > ${LOG_DIR}/c_output.log'
+                    sh 'gcc -o hello hello.c > ${LOG_DIR}/c_compile.log 2>&1'
+                }
+            }
+        }
+
+        stage('Run C') {
+            when {
+                expression { return params.Language == 'All' || params.Language == 'C' }
+            }
+            steps {
+                script {
+                    sh './hello > ${LOG_DIR}/c_output.log 2>&1'
                 }
             }
         }
@@ -38,7 +46,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'python3 hello.py > ${LOG_DIR}/python_output.log'
+                    sh 'python3 hello.py > ${LOG_DIR}/python_output.log 2>&1'
                 }
             }
         }
@@ -49,7 +57,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh './hello.sh > ${LOG_DIR}/bash_output.log'
+                    sh 'bash hello.sh > ${LOG_DIR}/bash_output.log 2>&1'
                 }
             }
         }
@@ -58,6 +66,7 @@ pipeline {
     post {
         always {
             archiveArtifacts artifacts: 'logs/*.log', allowEmptyArchive: true
+            echo 'Logs have been archived.'
         }
     }
 }
