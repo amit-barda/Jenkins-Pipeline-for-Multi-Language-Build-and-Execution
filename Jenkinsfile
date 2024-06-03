@@ -46,7 +46,7 @@ pipeline {
             steps {
                 script {
                     sh "mkdir -p '${LOG_DIR}'"
-                    sh './hello > ${LOG_DIR}/c_output.log 2>&1'
+                    sh './hello.c > ${LOG_DIR}/c_output.log 2>&1'
                 }
             }
         }
