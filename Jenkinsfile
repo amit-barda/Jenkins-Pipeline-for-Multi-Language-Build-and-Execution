@@ -7,21 +7,13 @@ pipeline {
 
     environment {
         LOG_DIR = "${WORKSPACE}/logs"
+    }
 
     stages {
-        stage('Checkout') {
-            steps {
-                script {
-                    // Checkout source code from the repository
-                    git branch: 'main', url: 'https://github.com/amit-barda/jenkins.git'
-                }
-            }
-        }
-
         stage('Initialize') {
             steps {
                 script {
-                    sh "mkdir -p ${LOG_DIR}"
+                    sh "mkdir -p '${LOG_DIR}'"
                 }
             }
         }
@@ -32,8 +24,8 @@ pipeline {
             }
             steps {
                 script {
-                    sh "mkdir -p '${LOG_DIR}'"
-                    sh "gcc -o ${WORKSPACE}/hello ${WORKSPACE}/hello.c > ${LOG_DIR}/c_compile.log 2>&1"
+                    sh "mkdir -p '${LOG_DIR}'" // Ensure log directory exists
+                    sh 'gcc -o hello hello.c > ${LOG_DIR}/c_compile.log 2>&1'
                 }
             }
         }
@@ -44,12 +36,11 @@ pipeline {
             }
             steps {
                 script {
-                    sh "mkdir -p '${LOG_DIR}'"
-                    sh "${WORKSPACE}/hello > ${LOG_DIR}/c_output.log 2>&1"
+                    sh "mkdir -p '${LOG_DIR}'" // Ensure log directory exists
+                    sh './hello > ${LOG_DIR}/c_output.log 2>&1'
                 }
             }
         }
-
 
         stage('Run Python') {
             when {
@@ -57,7 +48,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "mkdir -p '${LOG_DIR}'"
+                    sh "mkdir -p '${LOG_DIR}'" // Ensure log directory exists
                     sh 'python3 hello.py > ${LOG_DIR}/python_output.log 2>&1'
                 }
             }
@@ -69,7 +60,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "mkdir -p '${LOG_DIR}'"
+                    sh "mkdir -p '${LOG_DIR}'" // Ensure log directory exists
                     sh 'bash hello.sh > ${LOG_DIR}/bash_output.log 2>&1'
                 }
             }
