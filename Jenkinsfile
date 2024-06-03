@@ -34,7 +34,7 @@ pipeline {
             steps {
                 script {
                     sh "mkdir -p '${LOG_DIR}'"
-                    sh "gcc -o ${WORKSPACE}/hello ${WORKSPACE}/src/hello.c > ${LOG_DIR}/c_compile.log 2>&1"
+                    sh "gcc -o ${WORKSPACE}/hello ${WORKSPACE}/hello.c > ${LOG_DIR}/c_compile.log 2>&1"
                 }
             }
         }
