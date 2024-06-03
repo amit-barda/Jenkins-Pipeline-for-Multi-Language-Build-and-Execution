@@ -10,6 +10,15 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Checkout source code from the repository
+                    git branch: 'main', url: 'https://github.com/amit-barda/jenkins.git'
+                }
+            }
+        }
+
         stage('Initialize') {
             steps {
                 script {
@@ -24,7 +33,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "mkdir -p '${LOG_DIR}'" // Ensure log directory exists
+                    sh "mkdir -p '${LOG_DIR}'"
                     sh 'gcc -o hello hello.c > ${LOG_DIR}/c_compile.log 2>&1'
                 }
             }
@@ -36,7 +45,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "mkdir -p '${LOG_DIR}'" // Ensure log directory exists
+                    sh "mkdir -p '${LOG_DIR}'"
                     sh './hello > ${LOG_DIR}/c_output.log 2>&1'
                 }
             }
@@ -48,7 +57,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "mkdir -p '${LOG_DIR}'" // Ensure log directory exists
+                    sh "mkdir -p '${LOG_DIR}'"
                     sh 'python3 hello.py > ${LOG_DIR}/python_output.log 2>&1'
                 }
             }
@@ -60,7 +69,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "mkdir -p '${LOG_DIR}'" // Ensure log directory exists
+                    sh "mkdir -p '${LOG_DIR}'"
                     sh 'bash hello.sh > ${LOG_DIR}/bash_output.log 2>&1'
                 }
             }
