@@ -34,7 +34,7 @@ pipeline {
             steps {
                 script {
                     sh "mkdir -p '${LOG_DIR}'"
-                    sh "gcc -o hello src/hello.c > ${LOG_DIR}/c_compile.log 2>&1"
+                    sh "gcc -o ${WORKSPACE}/hello ${WORKSPACE}/src/hello.c > ${LOG_DIR}/c_compile.log 2>&1"
                 }
             }
         }
@@ -46,10 +46,11 @@ pipeline {
             steps {
                 script {
                     sh "mkdir -p '${LOG_DIR}'"
-                    sh './hello > ${LOG_DIR}/c_output.log 2>&1'
+                    sh "${WORKSPACE}/hello > ${LOG_DIR}/c_output.log 2>&1"
                 }
             }
         }
+
 
         stage('Run Python') {
             when {
