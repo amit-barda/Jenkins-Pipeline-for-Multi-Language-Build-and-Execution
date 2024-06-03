@@ -13,7 +13,7 @@ pipeline {
         stage('Initialize') {
             steps {
                 script {
-                    sh "mkdir -p ${LOG_DIR}"
+                    sh "mkdir -p '${LOG_DIR}'"
                 }
             }
         }
@@ -24,7 +24,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "mkdir -p ${LOG_DIR}" // Ensure log directory exists
+                    sh "mkdir -p '${LOG_DIR}'" // Ensure log directory exists
                     sh 'gcc -o hello hello.c > ${LOG_DIR}/c_compile.log 2>&1'
                 }
             }
@@ -36,7 +36,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "mkdir -p ${LOG_DIR}" // Ensure log directory exists
+                    sh "mkdir -p '${LOG_DIR}'" // Ensure log directory exists
                     sh './hello > ${LOG_DIR}/c_output.log 2>&1'
                 }
             }
@@ -48,7 +48,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "mkdir -p ${LOG_DIR}" // Ensure log directory exists
+                    sh "mkdir -p '${LOG_DIR}'" // Ensure log directory exists
                     sh 'python3 hello.py > ${LOG_DIR}/python_output.log 2>&1'
                 }
             }
@@ -60,7 +60,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "mkdir -p ${LOG_DIR}" // Ensure log directory exists
+                    sh "mkdir -p '${LOG_DIR}'" // Ensure log directory exists
                     sh 'bash hello.sh > ${LOG_DIR}/bash_output.log 2>&1'
                 }
             }
