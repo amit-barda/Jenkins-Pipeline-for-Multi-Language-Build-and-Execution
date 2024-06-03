@@ -22,7 +22,7 @@ pipeline {
         stage('Initialize') {
             steps {
                 script {
-                    sh "mkdir -p '${LOG_DIR}'"
+                    sh "mkdir -p ${LOG_DIR}"
                 }
             }
         }
