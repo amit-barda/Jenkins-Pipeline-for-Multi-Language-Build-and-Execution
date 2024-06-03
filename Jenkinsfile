@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'Language', choices: ['All', 'C', 'Python', 'Bash'], description: 'Choose the language for the pipeline', defaultValue: 'All')
+        choice(name: 'Language', choices: ['All', 'C', 'Python', 'Bash'], description: 'Choose the language for the pipeline. Default is All.')
     }
 
     environment {
